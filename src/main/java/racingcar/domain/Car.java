@@ -1,35 +1,36 @@
 package racingcar.domain;
 
-import camp.nextstep.edu.missionutils.Randoms;
-
 public class Car {
 
-  private final String carName;
-  private int position = 0;
-  private static final int MOVE_THRESHOLD = 4;
-  private static final int RANDOM_RANGE = 10;
+  public static final int MAX_NAME_LENGTH = 5;
+  public static final int MOVE_CONDITION = 4;
+  public static final String NAME_ERROR_MESSAGE = "자동차 이름 형식과 맞지 않습니다.";
 
-  public Car(String carName) {
-    this.carName = carName;
+  private String name;
+  private int position = 0; // inital postion setting
+
+  public Car(String input) {
+    validateCarNameLength(input);
+    this.name = input;
   }
 
-  public Car(String carName, int position) {
-    this.carName = carName;
-    this.position = position;
-  }
-
-  public void moveForward() {
-    int randomNumber = Randoms.pickNumberInRange(0, RANDOM_RANGE - 1);
-    if (randomNumber >= MOVE_THRESHOLD) {
-      position++;
+  private static void validateCarNameLength(String input) {
+    if (input.length() > MAX_NAME_LENGTH || input.isEmpty()){
+      throw new IllegalArgumentException(NAME_ERROR_MESSAGE);
     }
   }
 
   public int getPosition() {
-    return this.position;
+    return position;
   }
 
-  public String getCarName() {
-    return this.carName;
+  public void move(int number) {
+    if (checkMoveCondition(number)) {
+      ++position;
+    }
+  }
+
+  private static boolean checkMoveCondition(int number) {
+    return number >= MOVE_CONDITION;
   }
 }
